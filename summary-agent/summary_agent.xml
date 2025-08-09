@@ -1,0 +1,429 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable id="K,;MzK,q,YhavdUUDg`S">input_text</variable>
+    <variable id="/G)Kwf:m*$tTT:LT6|?:">custom_system_prompt</variable>
+    <variable id="uZ`g[hP=FHo_wuez!Zl?">file_content</variable>
+    <variable id="x*96cZC,?e5^LtAn%N@M">prompt</variable>
+    <variable id="XJ`s^!$vK,][.yTItxe/">llm_response</variable>
+    <variable id="3.aB~*2RTAqlEgqMhw.e">input_file</variable>
+  </variables>
+  <block type="behaviour_behaviour" id="3k):{e`OSj-X8)wE_P!)" x="-50" y="450">
+    <field name="IS_DEFAULT">TRUE</field>
+    <field name="NAME">text_summary</field>
+    <statement name="ACTIONS">
+      <block type="behaviour_action" id="sjaWe.usz9wX#[g#!(/P">
+        <field name="PLAY_NEXT">TRUE</field>
+        <statement name="ACTIONLETS">
+          <block type="custom_primitive" id="yN7.tRDvpZ*5uxr@;1e|">
+            <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="text_input"></mutation>
+            <field name="SCRIPTS">text_input</field>
+            <value name="ARG1">
+              <block type="variables_get" id=".D,Rd/sTc~%_U,{!@M)N">
+                <field name="VAR" id="K,;MzK,q,YhavdUUDg`S">input_text</field>
+              </block>
+            </value>
+          </block>
+        </statement>
+        <next>
+          <block type="behaviour_action" id="h1o[lvJ9?~gqjXFMDQ7p">
+            <field name="PLAY_NEXT">FALSE</field>
+            <statement name="ACTIONLETS">
+              <block type="custom_primitive" id="UymFlfuc+L[#.cHIRgWm">
+                <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="query_knowledgebase"></mutation>
+                <field name="SCRIPTS">query_knowledgebase</field>
+                <value name="ARG1">
+                  <block type="text" id="0+otT,XH3JPv$HZ*C(LN">
+                    <field name="TEXT">USER_DATA</field>
+                  </block>
+                </value>
+                <value name="ARG2">
+                  <block type="text" id="y5Q?ky1F3|tjEH)]nDZb">
+                    <field name="TEXT">summary_prompt</field>
+                  </block>
+                </value>
+                <value name="ARG4">
+                  <block type="variables_get" id="u1xq~D!bx6bl#WOxE_0s">
+                    <field name="VAR" id="/G)Kwf:m*$tTT:LT6|?:">custom_system_prompt</field>
+                  </block>
+                </value>
+                <statement name="ARG6">
+                  <block type="play_next_primitive" id="Ft9NvtAhM.[aX.hlM=D~"></block>
+                </statement>
+                <statement name="ARG7">
+                  <block type="variables_set" id="qvtK+[Q.uRfzwciki-K(">
+                    <field name="VAR" id="/G)Kwf:m*$tTT:LT6|?:">custom_system_prompt</field>
+                    <value name="VALUE">
+                      <block type="text" id="B[Me:Y#3b*.9tfdT.l}`">
+                        <field name="TEXT">provide a summary</field>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="play_next_primitive" id="GaEdR-1dFH#$(1Kk@AQT"></block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </statement>
+            <next>
+              <block type="behaviour_action" id="l+]MsNgou.)D66SkVNKW">
+                <field name="PLAY_NEXT">FALSE</field>
+                <statement name="ACTIONLETS">
+                  <block type="custom_primitive" id="MCn;F7dza%j!mKl^;7O8">
+                    <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="query_knowledgebase"></mutation>
+                    <field name="SCRIPTS">query_knowledgebase</field>
+                    <value name="ARG1">
+                      <block type="text" id="roK;6NDOt;azsd;uF{35">
+                        <field name="TEXT">USER_DATA</field>
+                      </block>
+                    </value>
+                    <value name="ARG2">
+                      <block type="text" id="cRenFdz25r=.^q=p;c^l">
+                        <field name="TEXT">image_file</field>
+                      </block>
+                    </value>
+                    <value name="ARG4">
+                      <block type="variables_get" id="XSF1ll_yLp0M*cU40`RI">
+                        <field name="VAR" id="3.aB~*2RTAqlEgqMhw.e">input_file</field>
+                      </block>
+                    </value>
+                    <statement name="ARG6">
+                      <block type="custom_primitive" id="O;Ec0o0VoD81Qc9C36hN">
+                        <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="file_loader"></mutation>
+                        <field name="SCRIPTS">file_loader</field>
+                        <value name="ARG0">
+                          <block type="variables_get" id="!9gPqLGg3B(0#WGY3//$">
+                            <field name="VAR" id="3.aB~*2RTAqlEgqMhw.e">input_file</field>
+                          </block>
+                        </value>
+                        <value name="ARG1">
+                          <block type="text" id="[p/[31HzY%BwYG;g!R_b">
+                            <field name="TEXT">image</field>
+                          </block>
+                        </value>
+                        <value name="ARG2">
+                          <block type="variables_get" id="I]!j@/|EZ)/=g6(ao1#f">
+                            <field name="VAR" id="uZ`g[hP=FHo_wuez!Zl?">file_content</field>
+                          </block>
+                        </value>
+                        <statement name="ARG3">
+                          <block type="play_behaviour_primitive" id="E#K~W_os:[M]v_{vmSQW">
+                            <mutation xmlns="http://www.w3.org/1999/xhtml" existing_behaviours="call_llm,text_summary"></mutation>
+                            <field name="BEHAVIOURS">call_llm</field>
+                            <field name="ACTION_INDEX">0</field>
+                          </block>
+                        </statement>
+                        <statement name="ARG4">
+                          <block type="text_primitive" id="9e}h`JI~3o]R9h,t$Sph">
+                            <value name="VALUE">
+                              <block type="text_join" id="^LLx3dBUkty_W:95o(:(">
+                                <mutation items="2"></mutation>
+                                <value name="ADD0">
+                                  <block type="text" id="^/-EGR?Q_tx233(46/XA">
+                                    <field name="TEXT">unable to load image file </field>
+                                  </block>
+                                </value>
+                                <value name="ADD1">
+                                  <block type="variables_get" id="cuBR}V$qr4CO9mKCES^C">
+                                    <field name="VAR" id="3.aB~*2RTAqlEgqMhw.e">input_file</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="play_behaviour_primitive" id="oD3TVs6GY(/Dz#T1Im;j">
+                                <mutation xmlns="http://www.w3.org/1999/xhtml" existing_behaviours="call_llm,text_summary"></mutation>
+                                <field name="BEHAVIOURS">text_summary</field>
+                                <field name="ACTION_INDEX">0</field>
+                              </block>
+                            </next>
+                          </block>
+                        </statement>
+                      </block>
+                    </statement>
+                    <statement name="ARG7">
+                      <block type="play_next_primitive" id="_v,Kms$=N~P|=p/kC+7j"></block>
+                    </statement>
+                  </block>
+                </statement>
+                <next>
+                  <block type="behaviour_action" id=":mU:@^MxL;K1Lopm0FUo">
+                    <field name="PLAY_NEXT">FALSE</field>
+                    <statement name="ACTIONLETS">
+                      <block type="custom_primitive" id="C=!fS^tB:N;fRFF6gPl|">
+                        <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="query_knowledgebase"></mutation>
+                        <field name="SCRIPTS">query_knowledgebase</field>
+                        <value name="ARG1">
+                          <block type="text" id="d+whjI`T8t,{]{Y/J7`H">
+                            <field name="TEXT">USER_DATA</field>
+                          </block>
+                        </value>
+                        <value name="ARG2">
+                          <block type="text" id="[GGz%=GLjvoBz7*A]|}7">
+                            <field name="TEXT">text_file</field>
+                          </block>
+                        </value>
+                        <value name="ARG4">
+                          <block type="variables_get" id="PHQ`qdI_2F])*a]|AtD0">
+                            <field name="VAR" id="3.aB~*2RTAqlEgqMhw.e">input_file</field>
+                          </block>
+                        </value>
+                        <statement name="ARG6">
+                          <block type="custom_primitive" id="iD#}aFrobGGqaL(t./@F">
+                            <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="file_loader"></mutation>
+                            <field name="SCRIPTS">file_loader</field>
+                            <value name="ARG0">
+                              <block type="variables_get" id="Ct`wpp4igI,5%=@:c(a$">
+                                <field name="VAR" id="3.aB~*2RTAqlEgqMhw.e">input_file</field>
+                              </block>
+                            </value>
+                            <value name="ARG1">
+                              <block type="text" id="I}rT%BwWU~Qz85L/F46r">
+                                <field name="TEXT">text</field>
+                              </block>
+                            </value>
+                            <value name="ARG2">
+                              <block type="variables_get" id="$qm]5w27Zmr*O|eZ|b9F">
+                                <field name="VAR" id="uZ`g[hP=FHo_wuez!Zl?">file_content</field>
+                              </block>
+                            </value>
+                            <statement name="ARG3">
+                              <block type="play_behaviour_primitive" id="-?b;qDk3X^bH2npd(O:Q">
+                                <mutation xmlns="http://www.w3.org/1999/xhtml" existing_behaviours="call_llm,text_summary"></mutation>
+                                <field name="BEHAVIOURS">call_llm</field>
+                                <field name="ACTION_INDEX">0</field>
+                              </block>
+                            </statement>
+                            <statement name="ARG4">
+                              <block type="text_primitive" id="4ic$YC|v#I)w~%y*56nP">
+                                <value name="VALUE">
+                                  <block type="text_join" id="qY_VCq2tuUY*IW3hLUJj">
+                                    <mutation items="2"></mutation>
+                                    <value name="ADD0">
+                                      <block type="text" id="9)zINKJ.WF^*WKP]rYZM">
+                                        <field name="TEXT">unable to load text file </field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD1">
+                                      <block type="variables_get" id="}I.r4%fC}Pe#ZN/v`8Y~">
+                                        <field name="VAR" id="3.aB~*2RTAqlEgqMhw.e">input_file</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="play_behaviour_primitive" id="0,7Db4pjisy/#*j:12IH">
+                                    <mutation xmlns="http://www.w3.org/1999/xhtml" existing_behaviours="call_llm,text_summary"></mutation>
+                                    <field name="BEHAVIOURS">text_summary</field>
+                                    <field name="ACTION_INDEX">0</field>
+                                  </block>
+                                </next>
+                              </block>
+                            </statement>
+                          </block>
+                        </statement>
+                        <statement name="ARG7">
+                          <block type="play_next_primitive" id="4:TaNYdnOz:tM6EyA#1,"></block>
+                        </statement>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="behaviour_action" id="pD%b@Dsa|iXl@q$y?ao!">
+                        <field name="PLAY_NEXT">FALSE</field>
+                        <statement name="ACTIONLETS">
+                          <block type="custom_primitive" id="jQf/+u2[%yQ{aLhV)Kb{">
+                            <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="query_knowledgebase"></mutation>
+                            <field name="SCRIPTS">query_knowledgebase</field>
+                            <value name="ARG1">
+                              <block type="text" id="BUw3~Q=_z$YUVcffYhMO">
+                                <field name="TEXT">USER_DATA</field>
+                              </block>
+                            </value>
+                            <value name="ARG2">
+                              <block type="text" id="D,!%-1sw8ZK,G9[2?bkZ">
+                                <field name="TEXT">pdf_file</field>
+                              </block>
+                            </value>
+                            <value name="ARG4">
+                              <block type="variables_get" id="U963b[FlGeLH:K?qz~Kd">
+                                <field name="VAR" id="3.aB~*2RTAqlEgqMhw.e">input_file</field>
+                              </block>
+                            </value>
+                            <statement name="ARG6">
+                              <block type="custom_primitive" id="u)6ojX$yx5xemP#(#s56">
+                                <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="file_loader"></mutation>
+                                <field name="SCRIPTS">file_loader</field>
+                                <value name="ARG0">
+                                  <block type="variables_get" id="_J8O:(Z1AlRxuEcU6Q^;">
+                                    <field name="VAR" id="3.aB~*2RTAqlEgqMhw.e">input_file</field>
+                                  </block>
+                                </value>
+                                <value name="ARG1">
+                                  <block type="text" id="HF@?Q]WA.Z%_jGpCH2xu">
+                                    <field name="TEXT">pdf</field>
+                                  </block>
+                                </value>
+                                <value name="ARG2">
+                                  <block type="variables_get" id="Ln=Aq1O_1N*1h:DaDc/g">
+                                    <field name="VAR" id="uZ`g[hP=FHo_wuez!Zl?">file_content</field>
+                                  </block>
+                                </value>
+                                <statement name="ARG3">
+                                  <block type="play_behaviour_primitive" id="_-_qwdp!4+wtH]6edpYS">
+                                    <mutation xmlns="http://www.w3.org/1999/xhtml" existing_behaviours="call_llm,text_summary"></mutation>
+                                    <field name="BEHAVIOURS">call_llm</field>
+                                    <field name="ACTION_INDEX">0</field>
+                                  </block>
+                                </statement>
+                                <statement name="ARG4">
+                                  <block type="text_primitive" id="hr]@HVXLC*#5Z[Iv!MRK">
+                                    <value name="VALUE">
+                                      <block type="text_join" id="R@EeKW]H[8$v`w{@me:c">
+                                        <mutation items="2"></mutation>
+                                        <value name="ADD0">
+                                          <block type="text" id="7%?)PuWICF61V#42*6:S">
+                                            <field name="TEXT">unable to load PDF file </field>
+                                          </block>
+                                        </value>
+                                        <value name="ADD1">
+                                          <block type="variables_get" id="PyEat;?KKvEyb?5l@M9V">
+                                            <field name="VAR" id="3.aB~*2RTAqlEgqMhw.e">input_file</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="play_behaviour_primitive" id="0B9`-k%$/ewI`wy}1NUX">
+                                        <mutation xmlns="http://www.w3.org/1999/xhtml" existing_behaviours="call_llm,text_summary"></mutation>
+                                        <field name="BEHAVIOURS">text_summary</field>
+                                        <field name="ACTION_INDEX">0</field>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </statement>
+                              </block>
+                            </statement>
+                            <statement name="ARG7">
+                              <block type="play_behaviour_primitive" id="Q/-.rr5~@rel}K%7;WsO">
+                                <mutation xmlns="http://www.w3.org/1999/xhtml" existing_behaviours="call_llm,text_summary"></mutation>
+                                <field name="BEHAVIOURS">call_llm</field>
+                                <field name="ACTION_INDEX">0</field>
+                              </block>
+                            </statement>
+                          </block>
+                        </statement>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="behaviour_behaviour" id="g3UXc3?P71pb+KLBR%?t" x="930" y="430">
+    <field name="IS_DEFAULT">FALSE</field>
+    <field name="NAME">call_llm</field>
+    <statement name="ACTIONS">
+      <block type="behaviour_action" id="Vv|jc}PlT,%hl_0hPD2M">
+        <field name="PLAY_NEXT">TRUE</field>
+        <statement name="ACTIONLETS">
+          <block type="custom_primitive" id="Cfw._fH|FpNs.xpu:x,_">
+            <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="build_gpt_prompt"></mutation>
+            <field name="SCRIPTS">build_gpt_prompt</field>
+            <value name="ARG0">
+              <block type="variables_get" id=".y7,LxwBIqc.l;+c8)65">
+                <field name="VAR" id="/G)Kwf:m*$tTT:LT6|?:">custom_system_prompt</field>
+              </block>
+            </value>
+            <value name="ARG1">
+              <block type="variables_get" id="w^$?|1yM-|i@E`K|Vnso">
+                <field name="VAR" id="K,;MzK,q,YhavdUUDg`S">input_text</field>
+              </block>
+            </value>
+            <value name="ARG4">
+              <block type="variables_get" id="w=2Q_h|z8U$-B.][0-~q">
+                <field name="VAR" id="uZ`g[hP=FHo_wuez!Zl?">file_content</field>
+              </block>
+            </value>
+            <value name="ARG7">
+              <block type="variables_get" id="pWU^J/J*UVDf7n0x4-S`">
+                <field name="VAR" id="x*96cZC,?e5^LtAn%N@M">prompt</field>
+              </block>
+            </value>
+            <next>
+              <block type="custom_primitive" id="1Za{)4O4}BlQ%[5wygqU">
+                <mutation xmlns="http://www.w3.org/1999/xhtml" check_custom="invoke_llm"></mutation>
+                <field name="SCRIPTS">invoke_llm</field>
+                <value name="ARG0">
+                  <block type="text" id="D6lPYjw~nx3gnjPjI_vi">
+                    <field name="TEXT">http://localhost:8080</field>
+                  </block>
+                </value>
+                <value name="ARG1">
+                  <block type="text" id="[Q;K.k1B/gX5io.qf]62">
+                    <field name="TEXT">dev</field>
+                  </block>
+                </value>
+                <value name="ARG2">
+                  <block type="text" id="MWSw4G:Ey*.X^+4fr*Dy">
+                    <field name="TEXT">qwen3</field>
+                  </block>
+                </value>
+                <value name="ARG3">
+                  <block type="variables_get" id="!X-Ca-h,]aur9um/+3}6">
+                    <field name="VAR" id="x*96cZC,?e5^LtAn%N@M">prompt</field>
+                  </block>
+                </value>
+                <value name="ARG4">
+                  <block type="math_number" id="*z1OsQ_@W`(TFyvEzh],">
+                    <field name="NUM">0.2</field>
+                  </block>
+                </value>
+                <value name="ARG5">
+                  <block type="math_number" id="`IeA*C$[F:G%kni$l.!V">
+                    <field name="NUM">4096</field>
+                  </block>
+                </value>
+                <value name="ARG6">
+                  <block type="logic_boolean" id="HrN@24D4:%/Cci`)vT{o">
+                    <field name="BOOL">FALSE</field>
+                  </block>
+                </value>
+                <value name="ARG7">
+                  <block type="variables_get" id="V7wg-E.d#vnZa_U}P|5[">
+                    <field name="VAR" id="XJ`s^!$vK,][.yTItxe/">llm_response</field>
+                  </block>
+                </value>
+                <statement name="ARG8">
+                  <block type="text_primitive" id="1RU^$`ed6|qYu`P3o_eh">
+                    <value name="VALUE">
+                      <block type="variables_get" id="hCj!%G!QrP$2R=1Vi+O:">
+                        <field name="VAR" id="XJ`s^!$vK,][.yTItxe/">llm_response</field>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="play_behaviour_primitive" id="LEEHaRD0+OzI5-wu%|V.">
+                        <mutation xmlns="http://www.w3.org/1999/xhtml" existing_behaviours="call_llm,text_summary"></mutation>
+                        <field name="BEHAVIOURS">text_summary</field>
+                        <field name="ACTION_INDEX">0</field>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+                <statement name="ARG9">
+                  <block type="play_behaviour_primitive" id="fLdot]`hn*Q}x/Qj~Hw(">
+                    <mutation xmlns="http://www.w3.org/1999/xhtml" existing_behaviours="call_llm,text_summary"></mutation>
+                    <field name="BEHAVIOURS">text_summary</field>
+                    <field name="ACTION_INDEX">0</field>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+</xml>

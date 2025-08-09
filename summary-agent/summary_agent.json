@@ -1,0 +1,246 @@
+{
+  "default": "__init__",
+  "behaviours": [
+    {
+      "name": "__init__",
+      "actions": [
+        [
+          [
+            "knowledge",
+            {
+              "INPUT_TEXT": "",
+              "CUSTOM_SYSTEM_PROMPT": "",
+              "FILE_CONTENT": "",
+              "PROMPT": "",
+              "LLM_RESPONSE": "",
+              "INPUT_FILE": ""
+            }
+          ],
+          [
+            "play_behaviour",
+            "text_summary"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "text_summary",
+      "actions": [
+        [
+          [
+            "custom",
+            {
+              "name": "text_input",
+              "args": {
+                "output": "INPUT_TEXT"
+              }
+            }
+          ],
+          [
+            "play_behaviour",
+            "next"
+          ]
+        ],
+        [
+          [
+            "custom",
+            {
+              "name": "query_knowledgebase",
+              "args": {
+                "knowledge_key": "USER_DATA",
+                "query_arg": "summary_prompt",
+                "query_output": "CUSTOM_SYSTEM_PROMPT",
+                "success_action": [
+                  "play_behaviour",
+                  "next"
+                ],
+                "failed_action": [
+                  "knowledge",
+                  {
+                    "CUSTOM_SYSTEM_PROMPT": "provide a summary"
+                  },
+                  "play_behaviour",
+                  "next"
+                ]
+              }
+            }
+          ]
+        ],
+        [
+          [
+            "custom",
+            {
+              "name": "query_knowledgebase",
+              "args": {
+                "knowledge_key": "USER_DATA",
+                "query_arg": "image_file",
+                "query_output": "INPUT_FILE",
+                "success_action": [
+                  "custom",
+                  {
+                    "name": "file_loader",
+                    "args": {
+                      "file_location": "INPUT_FILE",
+                      "file_type": "image",
+                      "output": "FILE_CONTENT",
+                      "success_action": [
+                        "play_behaviour",
+                        "call_llm:0"
+                      ],
+                      "failed_action": [
+                        "text",
+                        [
+                          "unable to load image file {}",
+                          [
+                            "INPUT_FILE"
+                          ]
+                        ],
+                        "play_behaviour",
+                        "text_summary:0"
+                      ]
+                    }
+                  }
+                ],
+                "failed_action": [
+                  "play_behaviour",
+                  "next"
+                ]
+              }
+            }
+          ]
+        ],
+        [
+          [
+            "custom",
+            {
+              "name": "query_knowledgebase",
+              "args": {
+                "knowledge_key": "USER_DATA",
+                "query_arg": "text_file",
+                "query_output": "INPUT_FILE",
+                "success_action": [
+                  "custom",
+                  {
+                    "name": "file_loader",
+                    "args": {
+                      "file_location": "INPUT_FILE",
+                      "file_type": "text",
+                      "output": "FILE_CONTENT",
+                      "success_action": [
+                        "play_behaviour",
+                        "call_llm:0"
+                      ],
+                      "failed_action": [
+                        "text",
+                        [
+                          "unable to load text file {}",
+                          [
+                            "INPUT_FILE"
+                          ]
+                        ],
+                        "play_behaviour",
+                        "text_summary:0"
+                      ]
+                    }
+                  }
+                ],
+                "failed_action": [
+                  "play_behaviour",
+                  "next"
+                ]
+              }
+            }
+          ]
+        ],
+        [
+          [
+            "custom",
+            {
+              "name": "query_knowledgebase",
+              "args": {
+                "knowledge_key": "USER_DATA",
+                "query_arg": "pdf_file",
+                "query_output": "INPUT_FILE",
+                "success_action": [
+                  "custom",
+                  {
+                    "name": "file_loader",
+                    "args": {
+                      "file_location": "INPUT_FILE",
+                      "file_type": "pdf",
+                      "output": "FILE_CONTENT",
+                      "success_action": [
+                        "play_behaviour",
+                        "call_llm:0"
+                      ],
+                      "failed_action": [
+                        "text",
+                        [
+                          "unable to load PDF file {}",
+                          [
+                            "INPUT_FILE"
+                          ]
+                        ],
+                        "play_behaviour",
+                        "text_summary:0"
+                      ]
+                    }
+                  }
+                ],
+                "failed_action": [
+                  "play_behaviour",
+                  "call_llm:0"
+                ]
+              }
+            }
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "call_llm",
+      "actions": [
+        [
+          [
+            "custom",
+            {
+              "name": "build_gpt_prompt",
+              "args": {
+                "system_prompt": "CUSTOM_SYSTEM_PROMPT",
+                "user_prompt": "INPUT_TEXT",
+                "media_content": "FILE_CONTENT",
+                "output": "PROMPT"
+              }
+            }
+          ],
+          [
+            "custom",
+            {
+              "name": "invoke_llm",
+              "args": {
+                "base_url": "http://localhost:8080",
+                "api_key": "dev",
+                "model": "qwen3",
+                "prompt": "PROMPT",
+                "temperature": 0.2,
+                "max_tokens": 4096,
+                "stream": false,
+                "response": "LLM_RESPONSE",
+                "success_action": [
+                  "text",
+                  "LLM_RESPONSE",
+                  "play_behaviour",
+                  "text_summary:0"
+                ],
+                "failed_action": [
+                  "play_behaviour",
+                  "text_summary:0"
+                ]
+              }
+            }
+          ]
+        ]
+      ]
+    }
+  ]
+}
