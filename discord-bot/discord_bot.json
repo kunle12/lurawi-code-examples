@@ -1,0 +1,259 @@
+{
+  "default": "__init__",
+  "behaviours": [
+    {
+      "name": "__init__",
+      "actions": [
+        [
+          [
+            "knowledge",
+            {
+              "CONV_HISTORY": "",
+              "STREAMING": "",
+              "USER_MESSAGE": "",
+              "LLMTEXT": "",
+              "FILE_CONTENT": "",
+              "PROMPT": "",
+              "IMAGE_URL": ""
+            }
+          ],
+          [
+            "play_behaviour",
+            "main"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "main",
+      "actions": [
+        [
+          [
+            "workflow_interaction",
+            {
+              "engagement": [
+                "knowledge",
+                {
+                  "CONV_HISTORY": []
+                },
+                "play_behaviour",
+                "input:0"
+              ],
+              "userdata": [
+                "play_behaviour",
+                "input:0"
+              ]
+            }
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "call_llm",
+      "actions": [
+        [
+          [
+            "custom",
+            "current_datetime"
+          ],
+          [
+            "custom",
+            {
+              "name": "build_gpt_prompt",
+              "args": {
+                "system_prompt": [
+                  "You are a helpful assistant. You need to follow the instructions from human as close as possible and provide answer as accurate and succinct as possible. If you don't know the answer, just say I don't know the answer. Your current time is {}. You are located in Sydney Australia.",
+                  [
+                    "CURRENT_DATETIME"
+                  ]
+                ],
+                "user_prompt": "USER_MESSAGE",
+                "history": "CONV_HISTORY",
+                "output": "PROMPT"
+              }
+            }
+          ],
+          [
+            "custom",
+            {
+              "name": "invoke_llm",
+              "args": {
+                "base_url": "http://localhost:8081",
+                "api_key": "teepee",
+                "model": "test",
+                "prompt": "PROMPT",
+                "temperature": 0.6,
+                "max_tokens": 8192,
+                "stream": "STREAMING",
+                "response": "LLMTEXT",
+                "success_action": [
+                  "play_behaviour",
+                  "save_conversations:0"
+                ],
+                "failed_action": [
+                  "text",
+                  "System error"
+                ]
+              }
+            }
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "input",
+      "actions": [
+        [
+          [
+            "custom",
+            {
+              "name": "query_knowledgebase",
+              "args": {
+                "knowledge_key": "USER_DATA",
+                "query_arg": "stream",
+                "query_output": "STREAMING",
+                "failed_action": [
+                  "knowledge",
+                  {
+                    "STREAMING": false
+                  }
+                ]
+              }
+            }
+          ],
+          [
+            "play_behaviour",
+            "next"
+          ]
+        ],
+        [
+          [
+            "custom",
+            {
+              "name": "query_knowledgebase",
+              "args": {
+                "knowledge_key": "USER_DATA",
+                "query_arg": "message",
+                "query_output": "USER_MESSAGE",
+                "failed_action": [
+                  "text",
+                  "System error"
+                ]
+              }
+            }
+          ],
+          [
+            "play_behaviour",
+            "next"
+          ]
+        ],
+        [
+          [
+            "custom",
+            {
+              "name": "query_knowledgebase",
+              "args": {
+                "knowledge_key": "USER_DATA",
+                "query_arg": "image_attachment_url",
+                "query_output": "IMAGE_URL",
+                "success_action": [
+                  "custom",
+                  {
+                    "name": "file_loader",
+                    "args": {
+                      "file_location": "IMAGE_URL",
+                      "file_type": "image",
+                      "output": "FILE_CONTENT",
+                      "success_action": [
+                        "play_behaviour",
+                        "call_vlm:0"
+                      ],
+                      "failed_action": [
+                        "text",
+                        "can not to load image"
+                      ]
+                    }
+                  }
+                ],
+                "failed_action": [
+                  "play_behaviour",
+                  "call_llm:0"
+                ]
+              }
+            }
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "save_conversations",
+      "actions": [
+        [
+          [
+            "custom",
+            {
+              "name": "cache_conversation_history",
+              "args": {
+                "user_input": "USER_MESSAGE",
+                "llm_output": "LLMTEXT",
+                "history": "CONV_HISTORY",
+                "max_tokens": 1000
+              }
+            }
+          ],
+          [
+            "text",
+            "LLMTEXT"
+          ],
+          [
+            "play_behaviour",
+            "main:0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "call_vlm",
+      "actions": [
+        [
+          [
+            "custom",
+            {
+              "name": "build_gpt_prompt",
+              "args": {
+                "user_prompt": "USER_MESSAGE",
+                "history": "CONV_HISTORY",
+                "media_content": "FILE_CONTENT",
+                "output": "PROMPT"
+              }
+            }
+          ],
+          [
+            "custom",
+            {
+              "name": "invoke_llm",
+              "args": {
+                "base_url": "http://localhost1:8080",
+                "api_key": "dev",
+                "model": "qwen3",
+                "prompt": "PROMPT",
+                "temperature": 0.2,
+                "max_tokens": 4096,
+                "stream": false,
+                "response": "LLMTEXT",
+                "success_action": [
+                  "play_behaviour",
+                  "save_conversations:0"
+                ],
+                "failed_action": [
+                  "text",
+                  "VLM error"
+                ]
+              }
+            }
+          ]
+        ]
+      ]
+    }
+  ]
+}

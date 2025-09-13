@@ -1,0 +1,8 @@
+{
+  "DiscordToken": "discord api token",
+  "DiscordGuild": "your default guild",
+  "DiscordChannel": "default channel",
+  "DiscordUserMap": {
+      "discord display name": "corresponding local name"
+  }
+}
